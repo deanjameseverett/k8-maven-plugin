@@ -61,7 +61,7 @@ public class BuildDockerImageMojo extends AbstractMojo {
     private void runCopyArtefactCommand(String dockerDirectory) throws InterruptedException, IOException {
         List<String> command = new ArrayList<String>();
         command.add("cp");
-        command.add("../../../target/" + artefactName + "-" + artefactVersion + ".jar");
+        command.add("../../../target/" + artefactName + "-" + artefactVersion + ".war");
         command.add(".");
         processBuilderHelper.executeCommand(dockerDirectory, command);
     }
@@ -69,7 +69,7 @@ public class BuildDockerImageMojo extends AbstractMojo {
     private void runRemoveArtefactCommand(String dockerDirectory) throws InterruptedException, IOException {
         List<String> command = new ArrayList<String>();
         command.add("rm");
-        command.add(artefactName + "-" + artefactVersion + ".jar");
+        command.add(artefactName + "-" + artefactVersion + ".war");
         processBuilderHelper.executeCommand(dockerDirectory, command);
     }
 
