@@ -39,6 +39,11 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
         getLog().info(msg);
     }
     
+    protected void error(String msg,Throwable e){
+        getLog().error(msg,e);
+    }
+    
+    
     protected boolean dockerfileExist(String dockerDirectory){
         return processBuilderHelper.contains(dockerDirectory, DOCKERFILE);// TODO: Make configuratable ?, or loop through all Dockerfiles?
     }

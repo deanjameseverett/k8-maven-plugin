@@ -20,44 +20,37 @@ public class DeployK8Mojo extends AbstractMojo {
 
     ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
 
-    public void execute()
-            throws MojoExecutionException
-    {
+    @Override
+    public void execute() throws MojoExecutionException {
+        
         getLog().info("Deploying component");
-
-        File configDir = new File("/config");
-        if (configDir.exists() && configDir.isDirectory()) {
-            try {
+        try {
+            File configDir = new File("/config");
+            if (configDir.exists() && configDir.isDirectory()) {
                 createConfig(configDir);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-        }
 
-        String s = Paths.get(".").toAbsolutePath().normalize().toString();
-        String k8Directory = s + "/src/main/k8/";
-        execute(k8Directory, PERSISTENCE_YML);
-        execute(k8Directory, CLAIM_YML);
-        execute(k8Directory, DEPLOYMENT_YML);
-        execute(k8Directory, SERVICE_YML);
+            String s = Paths.get(".").toAbsolutePath().normalize().toString();
+            String k8Directory = s + "/src/main/k8/";
+            execute(k8Directory, PERSISTENCE_YML);
+            execute(k8Directory, CLAIM_YML);
+            execute(k8Directory, DEPLOYMENT_YML);
+            execute(k8Directory, SERVICE_YML);
+        } catch (InterruptedException | IOException e) {
+            throw new MojoExecutionException("Could not deploy to Kubernetes",e);
+        }
     }
 
-    private void execute(String k8Directory, String command) {
-        try {
-            if (processBuilderHelper.contains(k8Directory, command)) {
-                runCommand(command, k8Directory);
-            }
-        }  catch (Exception e) {
-            getLog().error(e);
+    private void execute(String k8Directory, String command) throws InterruptedException, IOException {
+        if (processBuilderHelper.contains(k8Directory, command)) {
+            runCommand(command, k8Directory);
         }
     }
 
 
 
     private void runCommand(String cmd, String k8Directory) throws InterruptedException, IOException {
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add("kubectl");
         command.add("create");
         command.add("-f");
@@ -78,7 +71,7 @@ public class DeployK8Mojo extends AbstractMojo {
 
 
     private List<String> configMapCommand(String fileName) {
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add("kubectl");
         command.add("create");
         command.add("configmap");

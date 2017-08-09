@@ -16,27 +16,20 @@ public class DeleteDockerImageMojo extends AbstractDockerMojo {
     
     @Override
     public void execute()throws MojoExecutionException {
-        info("Deleting Image [" + getFullyQualifiedImageName() +"]");
-        execute(dockerConfDir, getFullyQualifiedImageName());
-    }
-
-    private void execute(String dockerDirectory, String imageName) {
+        info("Deleting docker image [" + getFullyQualifiedImageName() +"]");
+        
         try {
-            if (dockerfileExist(dockerDirectory)) {
-                runDockerBuildCommand(dockerDirectory, imageName);
+            if (dockerfileExist(dockerConfDir)) {
+                List<String> command = new ArrayList<>();
+                command.add(DOCKER);
+                command.add(RMI);
+                command.add(MINUS_F);
+                command.add(getFullyQualifiedImageName());
+                processBuilderHelper.executeCommand(dockerConfDir, command);
             }
         }  catch (IOException | InterruptedException e) {
-            getLog().error(e);
+            error("Could not delete docker image [" + getFullyQualifiedImageName() + "]",e);
         }
-    }
-
-    private void runDockerBuildCommand(String dockerDirectory, String imageName) throws InterruptedException, IOException {
-        List<String> command = new ArrayList<>();
-        command.add(DOCKER);
-        command.add(RMI);
-        command.add(MINUS_F);
-        command.add(imageName);
-        processBuilderHelper.executeCommand(dockerDirectory, command);
     }
 
 }
