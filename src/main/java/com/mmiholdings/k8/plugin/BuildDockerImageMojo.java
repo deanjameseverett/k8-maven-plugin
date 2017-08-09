@@ -19,36 +19,21 @@ import java.util.List;
 @Mojo(name = "buildImage",defaultPhase = LifecyclePhase.INSTALL)
 public class BuildDockerImageMojo extends AbstractMojo {
     
-    /**
-     * target as defined in pom.
-     */
     @Parameter(defaultValue = "${project.build.directory}", readonly = true, required=false)
     private File target;
     
-    /**
-     * imageName - default to artifactId.
-     */
     @Parameter( property = "imageName", defaultValue = "${project.artifactId}", readonly=true, required=false)
     private String imageName;
 
-    /**
-     * imageVersion - default to project version.
-     */
     @Parameter( property = "imageVersion", defaultValue = "${project.version}", readonly=true, required=false)
     private String imageVersion;
 
     @Parameter( property = "dockerConfDir", defaultValue = "${project.basedir}/src/main/docker", readonly=true, required=false)
     private String dockerConfDir;
             
-    /**
-     * artefactName - the name of the distributable unit. Default to build.finalName
-     */
     @Parameter( property = "artefactName", defaultValue = "${project.build.finalName}", readonly=true, required=false)
     private String artefactName;
     
-    /**
-     * artefactType - the type of the distributable unit (jar / war / ear). Default to packaging
-     */
     @Parameter( property = "artefactType", defaultValue = "${project.packaging}", readonly=true, required=false)
     private String artefactType;
     
