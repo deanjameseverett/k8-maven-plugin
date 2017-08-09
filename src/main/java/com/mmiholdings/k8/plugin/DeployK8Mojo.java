@@ -1,68 +1,34 @@
 package com.mmiholdings.k8.plugin;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Mojo(name = "deploy")
-public class DeployK8Mojo extends AbstractMojo {
+public class DeployK8Mojo extends AbstractKubernetesMojo {
 
-    public static final String PERSISTENCE_YML  = "persistence.yml";
-    public static final String CLAIM_YML        = "claim.yml";
-    public static final String DEPLOYMENT_YML   = "deployment.yml";
-    public static final String SERVICE_YML      = "service.yml";
-
-    ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
-
-    public void execute()
-            throws MojoExecutionException
-    {
-        getLog().info("Deploying component");
-
+    @Override
+    public void execute() throws MojoExecutionException {
+        
+        info("Deploying kubernetes components ....");
+        
         File configDir = new File("/config");
         if (configDir.exists() && configDir.isDirectory()) {
             try {
                 createConfig(configDir);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            } catch (InterruptedException | IOException e) {
+                throw new MojoExecutionException("Could not create config map for Kubernetes",e);
+            } 
         }
 
-        String s = Paths.get(".").toAbsolutePath().normalize().toString();
-        String k8Directory = s + "/src/main/k8/";
-        execute(k8Directory, PERSISTENCE_YML);
-        execute(k8Directory, CLAIM_YML);
-        execute(k8Directory, DEPLOYMENT_YML);
-        execute(k8Directory, SERVICE_YML);
-    }
-
-    private void execute(String k8Directory, String command) {
-        try {
-            if (processBuilderHelper.contains(k8Directory, command)) {
-                runCommand(command, k8Directory);
-            }
-        }  catch (Exception e) {
-            getLog().error(e);
-        }
-    }
-
-
-
-    private void runCommand(String cmd, String k8Directory) throws InterruptedException, IOException {
-        List<String> command = new ArrayList<String>();
-        command.add("kubectl");
-        command.add("create");
-        command.add("-f");
-        command.add(cmd);
-        processBuilderHelper.executeCommand(k8Directory, command);
+        runKubeControl(CREATE,persistenceFileName);
+        runKubeControl(CREATE,claimFileName);
+        runKubeControl(CREATE,deploymentFileName);
+        runKubeControl(CREATE,serviceFileName);  
     }
 
     private void createConfig(File folder) throws InterruptedException, IOException {
@@ -71,19 +37,25 @@ public class DeployK8Mojo extends AbstractMojo {
             if (listOfFiles[i].isFile()) {
                 List<String> cmd = configMapCommand(listOfFiles[i].getName());
                 String str = Arrays.toString(cmd.toArray());
-                getLog().info("config map command " + str);
+                info("config map command " + str);
             }
         }
     }
 
 
     private List<String> configMapCommand(String fileName) {
-        List<String> command = new ArrayList<String>();
-        command.add("kubectl");
-        command.add("create");
-        command.add("configmap");
-        command.add("fileName");
+        List<String> command = new ArrayList<>();
+        command.add(KUBE_CONTROL);
+        command.add(CREATE);
+        command.add(CONFIG_MAP);
+        command.add(FILENAME);
         command.add("--from-file=../../../config/" + fileName);
         return command;
     }
+    
+    
+    private static final String CREATE = "create";
+    private static final String CONFIG_MAP = "configmap";
+    private static final String FILENAME = "fileName";
+        
 }
