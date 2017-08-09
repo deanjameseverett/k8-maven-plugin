@@ -19,7 +19,7 @@ public class DeleteDockerImageMojo extends AbstractDockerMojo {
         info("Deleting docker image [" + getFullyQualifiedImageName() +"]");
         
         try {
-            if (dockerfileExist(dockerConfDir)) {
+            if (dockerfileExist()) {
                 List<String> command = new ArrayList<>();
                 command.add(DOCKER);
                 command.add(RMI);

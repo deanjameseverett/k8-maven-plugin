@@ -47,8 +47,8 @@ public class BuildDockerImageMojo extends AbstractDockerMojo {
         info("Including deployable unit [" + deployableUnit + "]");
         
         try {
-            if (dockerfileExist(dockerConfDir)) {
-                filterDockerfile();
+            if (dockerfileExist()) {
+                filterDockerfiles();
                 runDockerBuildCommand();
             }
         }  catch (IOException | InterruptedException ex) {
@@ -59,7 +59,7 @@ public class BuildDockerImageMojo extends AbstractDockerMojo {
     /*
     * Here copy the Dockerfile to target folder, and add filtering. So all pom vars will be substituted.
     */
-    private void filterDockerfile() throws MojoExecutionException{
+    private void filterDockerfiles() throws MojoExecutionException{
         try {
             MavenResourcesExecution mre = new MavenResourcesExecution(getResources(), new File(dockerConfDir), this.project, this.encoding, new ArrayList<>(), new ArrayList<>(), session);
             mavenResourcesFiltering.filterResources(mre);
@@ -82,11 +82,13 @@ public class BuildDockerImageMojo extends AbstractDockerMojo {
     private List<Resource> getResources(){
         List<Resource> resources = new ArrayList<>();
         // Add (by default) Dockerfile
-        resources.add(createResource(DOCKERFILE));
+        info("... including " + dockerFileName);
+        resources.add(createResource(dockerFileName));
         
         // Add any other as defined by the user
         if(dockerImageResources!=null && !dockerImageResources.isEmpty()){
             dockerImageResources.forEach((userDefinedResource) -> {
+                info("... including " + userDefinedResource);
                 resources.add(createResource(userDefinedResource));
             });
         }

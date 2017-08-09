@@ -1,6 +1,5 @@
 package com.mmiholdings.k8.plugin;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
@@ -8,12 +7,8 @@ import java.io.File;
 
 /**
  * Abstract class for docker mojos. Define some shared parameters
- * @see https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
  */
 public abstract class AbstractDockerMojo extends AbstractMojo {
-    
-    @Parameter(defaultValue = "${project.build.directory}", readonly = true, required=false)
-    protected File target;
     
     @Parameter( property = "imageName", defaultValue = "${project.artifactId}", readonly=true, required=false)
     protected String imageName;
@@ -30,22 +25,11 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     @Parameter( property = "artefactType", defaultValue = "${project.packaging}", readonly=true, required=false)
     protected String artefactType;
     
-    @Parameter( property = "encoding", defaultValue = "${project.build.sourceEncoding}" )
-    protected String encoding;
+    @Parameter( property = "dockerFileName", defaultValue = "Dockerfile", readonly=true, required=false)
+    protected String dockerFileName;
     
-    protected final ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
-        
-    protected void info(String msg){
-        getLog().info(msg);
-    }
-    
-    protected void error(String msg,Throwable e){
-        getLog().error(msg,e);
-    }
-    
-    
-    protected boolean dockerfileExist(String dockerDirectory){
-        return processBuilderHelper.contains(dockerDirectory, DOCKERFILE);// TODO: Make configuratable ?, or loop through all Dockerfiles?
+    protected boolean dockerfileExist(){
+        return processBuilderHelper.contains(dockerConfDir, dockerFileName);
     }
     
     protected String getFullyQualifiedImageName(){
@@ -58,7 +42,4 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     protected static final String BUILD = "build";
     protected static final String RMI = "rmi";
     protected static final String MINUS_T = "-t";
-    protected static final String MINUS_F = "-f";
-    protected static final String DOCKERFILE = "Dockerfile";
-    
 }
