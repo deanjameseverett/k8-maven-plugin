@@ -4,7 +4,7 @@
 
   <groupId>com.mmiholdings.k8.plugin</groupId>
   <artifactId>mmik8-maven-plugin</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <developers>
@@ -12,6 +12,14 @@
       <name>Dean James-Everett</name>
       <id>gracewell</id>
       <email>dean@gracewell.org</email>
+      <roles>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Phillip Kruger</name>
+      <id>phillip-kruger</id>
+      <email>phillip.kruger@phillip-kruger.com</email>
       <roles>
         <role>Architect</role>
       </roles>

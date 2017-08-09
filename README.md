@@ -1,4 +1,4 @@
-# MMI Holdings Docker / Kubernetes Maven Plugin
+# Kubernetes Maven Plugin
 
 **Version 1.0.0**
 
@@ -12,7 +12,8 @@ to build and deploy docker images to kubernetes
 
 ## Contributors
 
-- Dean James-Everett
+* [Dean James-Everett](https://github.com/deanjameseverett)
+* [Phillip Kruger](https://github.com/phillip-kruger)
 
 ## Pre-Requirements
 
@@ -37,10 +38,6 @@ For each maven project add the plugin in the
                 <groupId>com.mmiholdings.k8.plugin</groupId>
                 <artifactId>mmik8-maven-plugin</artifactId>
                 <version>1.0</version>
-                <configuration>
-                    <imageName>db2/local</imageName>
-                    <imageVersion>v1</imageVersion>
-                </configuration>
                 <executions>
                     <execution>
                         <id>mmik8-compile</id>
