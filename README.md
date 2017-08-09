@@ -60,9 +60,21 @@ Command line Execution
     mvn mmik8:undeploy
     
     
-How to structure you project
+## How to structure you project
 
-    src/main/docker/Dockerfile
+### Docker files.
+
+You can add your Docker file, and any other text based files you want to use in a directory:
+
+    src/main/docker/
+
+The default directory is `src/main/docker/`, however you can define your own:
+
+    <configuration>
+        <dockerConfDir>myOwn/dir</dockerConfDir>
+    </configuration>
+
+### Kubernetes files
     
 The plugin looks for a kubernetes yml files in this structure
 
