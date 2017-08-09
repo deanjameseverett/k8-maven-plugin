@@ -30,6 +30,9 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     @Parameter( property = "artefactType", defaultValue = "${project.packaging}", readonly=true, required=false)
     protected String artefactType;
     
+    @Parameter( property = "encoding", defaultValue = "${project.build.sourceEncoding}" )
+    protected String encoding;
+    
     protected final ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
         
     protected void info(String msg){
@@ -46,8 +49,6 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     
     protected static final String DOT = ".";
     protected static final String DOUBLE_DOT = ":";
-    protected static final String COPY = "cp"; // TODO: Is this Linux specific ? What about poor Windoze users ?
-    protected static final String REMOVE = "rm"; // TODO: Is this Linux specific ? What about poor Windoze users ?
     protected static final String DOCKER = "docker";
     protected static final String BUILD = "build";
     protected static final String RMI = "rmi";
