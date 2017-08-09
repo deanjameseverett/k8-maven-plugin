@@ -13,29 +13,24 @@ public class DeployK8Mojo extends AbstractKubernetesMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        
-        info("Deploying kubernetes components ....");
-        
-        File configDir = new File("/config");
-        if (configDir.exists() && configDir.isDirectory()) {
-            try {
-                createConfig(configDir);
-            } catch (InterruptedException | IOException e) {
-                throw new MojoExecutionException("Could not create config map for Kubernetes",e);
-            } 
+        if (kubernetesConfigmapExist()) {
+            createConfig();
         }
 
+        info("Deploying kubernetes components ....");
         runKubeControl(CREATE,persistenceFileName);
         runKubeControl(CREATE,claimFileName);
         runKubeControl(CREATE,deploymentFileName);
         runKubeControl(CREATE,serviceFileName);  
     }
 
-    private void createConfig(File folder) throws InterruptedException, IOException {
+    private void createConfig() {
+        
+        File folder = getKubernetesConfigFolder();
         File[] listOfFiles = folder.listFiles();
-        for (int i = 0; i < listOfFiles.length; i++) {
-            if (listOfFiles[i].isFile()) {
-                List<String> cmd = configMapCommand(listOfFiles[i].getName());
+        for (File listOfFile : listOfFiles) {
+            if (listOfFile.isFile()) {
+                List<String> cmd = configMapCommand(listOfFile.getAbsolutePath());
                 String str = Arrays.toString(cmd.toArray());
                 info("config map command " + str);
             }
@@ -49,7 +44,7 @@ public class DeployK8Mojo extends AbstractKubernetesMojo {
         command.add(CREATE);
         command.add(CONFIG_MAP);
         command.add(FILENAME);
-        command.add("--from-file=../../../config/" + fileName);
+        command.add(MINUS_MINUS_FROM_FILE + fileName);
         return command;
     }
     
@@ -57,5 +52,6 @@ public class DeployK8Mojo extends AbstractKubernetesMojo {
     private static final String CREATE = "create";
     private static final String CONFIG_MAP = "configmap";
     private static final String FILENAME = "fileName";
+    private static final String MINUS_MINUS_FROM_FILE = "--from-file=";
         
 }

@@ -1,6 +1,7 @@
 package com.mmiholdings.k8.plugin;
 
 import static com.mmiholdings.k8.plugin.AbstractMojo.MINUS_F;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,15 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
         return processBuilderHelper.contains(kubernetesConfDir, filename);
     }
     
+    protected File getKubernetesConfigFolder(){
+        return new File(kubernetesConfDir + CONFIG_DIR);
+    }
+    
+    protected boolean kubernetesConfigmapExist(){
+        File configDir = getKubernetesConfigFolder();
+        return configDir.exists() && configDir.isDirectory();
+    }
+    
     protected void runKubeControl(String instruction,String filename) throws MojoExecutionException {
         if (kubernetesfileExist(filename)) {
             List<String> command = new ArrayList<>();
@@ -48,5 +58,6 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
     }
     
     protected static final String KUBE_CONTROL = "kubectl";
+    private static final String CONFIG_DIR = "/config";
     
 }
