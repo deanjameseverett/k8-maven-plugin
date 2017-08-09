@@ -9,14 +9,14 @@ public class UnDeployK8Mojo extends AbstractKubernetesMojo {
     @Override
     public void execute() throws MojoExecutionException {
         info("Undeploying kubernetes components ....");
-        
+        if (kubernetesConfigmapExist()) {
+            deleteConfigMap(artefactName);
+        }
         runKubeControl(DELETE,serviceFileName);
         runKubeControl(DELETE,deploymentFileName);
         runKubeControl(DELETE,claimFileName);
         runKubeControl(DELETE,persistenceFileName);
-        
+
     }
-    
-    private static final String DELETE = "delete";
-    
+
 }

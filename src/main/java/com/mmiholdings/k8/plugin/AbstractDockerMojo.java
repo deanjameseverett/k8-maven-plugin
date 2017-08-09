@@ -18,10 +18,7 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
 
     @Parameter( property = "dockerConfDir", defaultValue = "${project.basedir}/src/main/docker", readonly=true, required=false)
     protected String dockerConfDir;
-            
-    @Parameter( property = "artefactName", defaultValue = "${project.build.finalName}", readonly=true, required=false)
-    protected String artefactName;
-    
+
     @Parameter( property = "artefactType", defaultValue = "${project.packaging}", readonly=true, required=false)
     protected String artefactType;
     

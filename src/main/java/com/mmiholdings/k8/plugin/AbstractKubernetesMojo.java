@@ -13,7 +13,14 @@ import org.apache.maven.plugins.annotations.Parameter;
  * @see https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
  */
 public abstract class AbstractKubernetesMojo extends AbstractMojo {
-    
+
+    protected static final String KUBE_CONTROL = "kubectl";
+    protected static final String CONFIG_DIR = "/config";
+    protected static final String CREATE = "create";
+    protected static final String CONFIG_MAP = "configmap";
+    protected static final String MINUS_MINUS_FROM_FILE = "--from-file=";
+    protected static final String DELETE = "delete";
+
     @Parameter( property = "kubernetesConfDir", defaultValue = "${project.basedir}/src/main/k8", readonly=true, required=false)
     protected String kubernetesConfDir;
     
@@ -56,8 +63,34 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
             }
         }
     }
-    
-    protected static final String KUBE_CONTROL = "kubectl";
-    private static final String CONFIG_DIR = "/config";
-    
+
+
+    protected void runKubeConfigMap(String configName, String fileName) throws MojoExecutionException {
+        List<String> command = new ArrayList<>();
+        command.add(KUBE_CONTROL);
+        command.add(CREATE);
+        command.add(CONFIG_MAP);
+        command.add(configName);
+        command.add(MINUS_MINUS_FROM_FILE + fileName);
+        try {
+            processBuilderHelper.executeCommand(kubernetesConfDir, command);
+        } catch (IOException | InterruptedException e) {
+            throw new MojoExecutionException("Could not create configmap from Kubernetes [" + configName + "]",e);
+        }
+    }
+
+    protected void deleteConfigMap(String configName) throws MojoExecutionException {
+        List<String> command = new ArrayList<>();
+        command.add(KUBE_CONTROL);
+        command.add(DELETE);
+        command.add(CONFIG_MAP);
+        command.add(configName);
+        try {
+            processBuilderHelper.executeCommand(kubernetesConfDir, command);
+        } catch (IOException | InterruptedException e) {
+            throw new MojoExecutionException("Could not create configmap from Kubernetes [" + configName + "]",e);
+        }
+    }
+
+
 }
