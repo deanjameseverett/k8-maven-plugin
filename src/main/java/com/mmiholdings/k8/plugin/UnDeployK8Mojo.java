@@ -2,7 +2,6 @@ package com.mmiholdings.k8.plugin;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.*;
@@ -13,17 +12,15 @@ import java.util.List;
 @Mojo(name = "undeploy")
 public class UnDeployK8Mojo extends AbstractMojo {
 
-
     public static final String PERSISTENCE_YML  = "persistence.yml";
     public static final String CLAIM_YML        = "claim.yml";
     public static final String DEPLOYMENT_YML   = "deployment.yml";
     public static final String SERVICE_YML      = "service.yml";
 
-    ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
+    private final ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
 
-    public void execute()
-            throws MojoExecutionException
-    {
+    @Override
+    public void execute() throws MojoExecutionException {
         getLog().info("un Deploying component");
         String s = Paths.get(".").toAbsolutePath().normalize().toString();
         String dockerDirectory = s + "/src/main/k8/";
@@ -39,13 +36,13 @@ public class UnDeployK8Mojo extends AbstractMojo {
             if (processBuilderHelper.contains(dockerDirectory, command)) {
                 runCommand(command, dockerDirectory);
             }
-        }  catch (Exception e) {
+        }  catch (IOException | InterruptedException e) {
             getLog().error(e);
         }
     }
 
     private void runCommand(String cmd, String dockerDirectory) throws InterruptedException, IOException {
-        List<String> command = new ArrayList<String>();
+        List<String> command = new ArrayList<>();
         command.add("kubectl");
         command.add("delete");
         command.add("-f");

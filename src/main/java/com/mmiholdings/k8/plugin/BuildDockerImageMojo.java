@@ -1,9 +1,7 @@
 package com.mmiholdings.k8.plugin;
 
-import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
 import java.io.File;
@@ -17,27 +15,8 @@ import java.util.List;
  * @see https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
  */
 @Mojo(name = "buildImage",defaultPhase = LifecyclePhase.INSTALL)
-public class BuildDockerImageMojo extends AbstractMojo {
+public class BuildDockerImageMojo extends AbstractDockerMojo {
     
-    @Parameter(defaultValue = "${project.build.directory}", readonly = true, required=false)
-    private File target;
-    
-    @Parameter( property = "imageName", defaultValue = "${project.artifactId}", readonly=true, required=false)
-    private String imageName;
-
-    @Parameter( property = "imageVersion", defaultValue = "${project.version}", readonly=true, required=false)
-    private String imageVersion;
-
-    @Parameter( property = "dockerConfDir", defaultValue = "${project.basedir}/src/main/docker", readonly=true, required=false)
-    private String dockerConfDir;
-            
-    @Parameter( property = "artefactName", defaultValue = "${project.build.finalName}", readonly=true, required=false)
-    private String artefactName;
-    
-    @Parameter( property = "artefactType", defaultValue = "${project.packaging}", readonly=true, required=false)
-    private String artefactType;
-    
-    private final ProcessBuilderHelper processBuilderHelper = new ProcessBuilderHelper(getLog());
     private String deployableUnit;
     
     @Override
@@ -48,13 +27,12 @@ public class BuildDockerImageMojo extends AbstractMojo {
         this.deployableUnit = f.getAbsolutePath();
         info("Including deployable unit [" + deployableUnit + "]");
         
-        String fullyQualifiedImageName = imageName + DOUBLE_DOT + imageVersion;
-        execute(dockerConfDir, fullyQualifiedImageName);
+        execute(dockerConfDir, getFullyQualifiedImageName());
     }
 
     private void execute(String dockerDirectory, String imageName) {
         try {
-            if (processBuilderHelper.contains(dockerDirectory, DOCKERFILE)) { // TODO: Make configuratable ?, or loop through all Dockerfiles?
+            if (dockerfileExist(dockerDirectory)) {
                 runCopyArtefactCommand(dockerDirectory);
                 runDockerBuildCommand(dockerDirectory, imageName);
                 runRemoveArtefactCommand(dockerDirectory);
@@ -89,17 +67,4 @@ public class BuildDockerImageMojo extends AbstractMojo {
         command.add(DOT);
         processBuilderHelper.executeCommand(dockerDirectory, command);
     }
-    
-    private void info(String msg){
-        getLog().info(msg);
-    }
-    
-    private static final String DOT = ".";
-    private static final String DOUBLE_DOT = ":";
-    private static final String COPY = "cp"; // TODO: Is this Linux specific ? What about poor Windoze users ?
-    private static final String REMOVE = "rm"; // TODO: Is this Linux specific ? What about poor Windoze users ?
-    private static final String DOCKER = "docker";
-    private static final String BUILD = "build";
-    private static final String MINUS_T = "-t";
-    private static final String DOCKERFILE = "Dockerfile";
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProcessBuilderHelper {
 
-    private Log log;
+    private final Log log;
 
     public ProcessBuilderHelper(Log l) {
         this.log = l;
@@ -19,16 +19,28 @@ public class ProcessBuilderHelper {
     }
 
     public List<String> executeCommandWithResult(List<String> command) throws IOException, InterruptedException {
-        List<String> l = new ArrayList<String>();
+        List<String> l = new ArrayList<>();
         processs(null, command, l);
         return l;
     }
-
 
     public void executeCommand(String dockerDirectory, List<String> command) throws IOException, InterruptedException {
         processs(dockerDirectory, command);
     }
 
+    public boolean contains(String dockerDirectory, String fileName) {
+        File f = new File(dockerDirectory);
+        File[] l = f.listFiles();
+        for (int i = 0; i < f.listFiles().length; i++) {
+            if (l[i].isFile()) {
+                if (l[i].getName().equals(fileName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
     private void processs(String dockerDirectory, List<String> command, List<String> results) throws IOException {
         String line;
         BufferedReader br = execPS(dockerDirectory, command);
@@ -53,21 +65,6 @@ public class ProcessBuilderHelper {
         InputStream processStdOutput = process.getInputStream();
         Reader r = new InputStreamReader(processStdOutput);
         BufferedReader br = new BufferedReader(r);
-        String line;
         return br;
     }
-
-    public boolean contains(String dockerDirectory, String fileName) {
-        File f = new File(dockerDirectory);
-        File[] l = f.listFiles();
-        for (int i = 0; i < f.listFiles().length; i++) {
-            if (l[i].isFile()) {
-                if (l[i].getName().equals(fileName)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 }
