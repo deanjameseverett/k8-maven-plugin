@@ -1,5 +1,6 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.docker;
 
+import com.mmiholdings.k8.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
@@ -26,11 +27,11 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     protected String dockerFileName;
     
     protected boolean dockerfileExist(){
-        return processBuilderHelper.contains(dockerConfDir, dockerFileName);
+        return processBuilderHelper.contains(new File(dockerConfDir), dockerFileName);
     }
     
-    protected String getFullyQualifiedImageName(){
-        return imageName + DOUBLE_DOT + imageVersion;
+    protected DockerCommandHelper getDockerCommandHelper(){
+        return new DockerCommandHelper(processBuilderHelper);
     }
     
     protected static final String DOT = ".";

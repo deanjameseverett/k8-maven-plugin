@@ -1,6 +1,6 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.kubernetes;
 
-import static com.mmiholdings.k8.plugin.AbstractMojo.MINUS_F;
+import com.mmiholdings.k8.plugin.AbstractMojo;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
     protected String serviceFileName;
     
     protected boolean kubernetesfileExist(String filename){
-        return processBuilderHelper.contains(kubernetesConfDir, filename);
+        return processBuilderHelper.contains(new File(kubernetesConfDir), filename);
     }
     
     protected File getKubernetesConfigFolder(){
@@ -54,10 +54,10 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
             List<String> command = new ArrayList<>();
             command.add(KUBE_CONTROL);
             command.add(instruction);
-            command.add(MINUS_F);
+            command.add("-f");
             command.add(filename);
             try {
-                processBuilderHelper.executeCommand(kubernetesConfDir, command);
+                processBuilderHelper.executeCommand(new File(kubernetesConfDir), command);
             } catch (IOException | InterruptedException e) {
                 throw new MojoExecutionException("Could not " + instruction + " from Kubernetes [" + filename + "]",e);
             }
@@ -73,7 +73,7 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
         command.add(configName);
         command.add(MINUS_MINUS_FROM_FILE + fileName);
         try {
-            processBuilderHelper.executeCommand(kubernetesConfDir, command);
+            processBuilderHelper.executeCommand(new File(kubernetesConfDir), command);
         } catch (IOException | InterruptedException e) {
             throw new MojoExecutionException("Could not create configmap from Kubernetes [" + configName + "]",e);
         }
@@ -86,7 +86,7 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
         command.add(CONFIG_MAP);
         command.add(configName);
         try {
-            processBuilderHelper.executeCommand(kubernetesConfDir, command);
+            processBuilderHelper.executeCommand(new File(kubernetesConfDir), command);
         } catch (IOException | InterruptedException e) {
             throw new MojoExecutionException("Could not create configmap from Kubernetes [" + configName + "]",e);
         }

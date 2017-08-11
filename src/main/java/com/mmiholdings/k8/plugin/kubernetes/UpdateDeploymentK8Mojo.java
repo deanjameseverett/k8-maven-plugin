@@ -1,5 +1,6 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.kubernetes;
 
+import com.mmiholdings.k8.plugin.ProcessBuilderHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -21,10 +22,10 @@ public class UpdateDeploymentK8Mojo extends AbstractMojo {
         getLog().info("un Deploying component");
         String s = Paths.get(".").toAbsolutePath().normalize().toString();
         String dockerDirectory = s + "/src/main/k8/";
-        execute(dockerDirectory, DEPLOYMENT_YML);
+        execute(new File(dockerDirectory), DEPLOYMENT_YML);
     }
 
-    private void execute(String dockerDirectory, String command) {
+    private void execute(File dockerDirectory, String command) {
         try {
             if (processBuilderHelper.contains(dockerDirectory, command)) {
                 runCommand(command, dockerDirectory);
@@ -34,7 +35,7 @@ public class UpdateDeploymentK8Mojo extends AbstractMojo {
         }
     }
 
-    private void runCommand(String cmd, String dockerDirectory) throws InterruptedException, IOException {
+    private void runCommand(String cmd, File dockerDirectory) throws InterruptedException, IOException {
         List<String> command = new ArrayList<>();
         command.add("kubectl");
         command.add("edit");

@@ -1,11 +1,9 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.docker;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
 /**
@@ -16,19 +14,15 @@ public class DeleteDockerImageMojo extends AbstractDockerMojo {
     
     @Override
     public void execute()throws MojoExecutionException {
-        info("Deleting docker image [" + getFullyQualifiedImageName() +"]");
+        info("Deleting docker image [" + imageName +"]");
         
         try {
             if (dockerfileExist()) {
-                List<String> command = new ArrayList<>();
-                command.add(DOCKER);
-                command.add(RMI);
-                command.add(MINUS_F);
-                command.add(getFullyQualifiedImageName());
-                processBuilderHelper.executeCommand(dockerConfDir, command);
+                getDockerCommandHelper().delete(target, imageName, imageVersion);
             }
         }  catch (IOException | InterruptedException e) {
-            error("Could not delete docker image [" + getFullyQualifiedImageName() + "]",e);
+            // We do not fail... Just print in log
+            error("Could not delete docker image [" + imageName + "]",e);
         }
     }
 

@@ -1,13 +1,9 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.kubernetes;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Mojo(name = "deploy")
 public class DeployK8Mojo extends AbstractKubernetesMojo {
@@ -31,7 +27,7 @@ public class DeployK8Mojo extends AbstractKubernetesMojo {
             String configMapName = artefactName;
             info("creating configmap for " + configMapName);
             try {
-                runKubeConfigMap(configMapName,folder.getAbsolutePath().toString());
+                runKubeConfigMap(configMapName,folder.getAbsolutePath());
             } catch (MojoExecutionException e) {
                 error("file error",e);
             }

@@ -1,4 +1,4 @@
-package com.mmiholdings.k8.plugin;
+package com.mmiholdings.k8.plugin.kubernetes;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
