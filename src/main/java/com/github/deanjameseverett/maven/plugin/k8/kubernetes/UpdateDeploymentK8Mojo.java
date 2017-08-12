@@ -1,4 +1,4 @@
-package com.mmiholdings.k8.plugin.kubernetes;
+package com.github.deanjameseverett.maven.plugin.k8.kubernetes;
 
 import java.io.IOException;
 import org.apache.maven.plugin.MojoExecutionException;

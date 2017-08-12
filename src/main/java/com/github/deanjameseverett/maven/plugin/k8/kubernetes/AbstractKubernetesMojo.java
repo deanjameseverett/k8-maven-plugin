@@ -1,6 +1,6 @@
-package com.mmiholdings.k8.plugin.kubernetes;
+package com.github.deanjameseverett.maven.plugin.k8.kubernetes;
 
-import com.mmiholdings.k8.plugin.AbstractMojo;
+import com.github.deanjameseverett.maven.plugin.k8.AbstractMojo;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

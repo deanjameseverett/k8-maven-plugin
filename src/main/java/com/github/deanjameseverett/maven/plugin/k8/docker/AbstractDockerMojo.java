@@ -1,6 +1,6 @@
-package com.mmiholdings.k8.plugin.docker;
+package com.github.deanjameseverett.maven.plugin.k8.docker;
 
-import com.mmiholdings.k8.plugin.AbstractMojo;
+import com.github.deanjameseverett.maven.plugin.k8.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;

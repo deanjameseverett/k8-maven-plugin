@@ -1,6 +1,6 @@
 # Kubernetes Maven Plugin
 
-**Version 1.0.0**
+**Version 1.0.2-SNAPSHOT**
 
 This is a maven plugin that can be installed locally and 
 on the central artifactory repo.
@@ -31,21 +31,23 @@ Otherwise it will be pulled from artefactory when you add it to your maven pom.x
 ## Usage
 
 For each maven project add the plugin (you might want to do this in a profile)
-Example below will delete and build the docker image.
+Example below will delete and build the docker image. And then redeploy to kubernetes
     
     <build>
         <plugins>
             <plugin>
-                <groupId>com.mmiholdings.k8.plugin</groupId>
-                <artifactId>mmik8-maven-plugin</artifactId>
+                <groupId>com.github.deanjameseverett</groupId>
+                <artifactId>k8-maven-plugin</artifactId>
                 <version>1.0.2-SNAPSHOT</version>
                 <executions>
                     <execution>
-                        <id>mmik8-compile</id>
+                        <id>container</id>
                         <phase>install</phase>
                         <goals>
                             <goal>deleteImage</goal>
                             <goal>buildImage</goal>
+                            <goal>undeploy</goal>
+                            <goal>deploy</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -56,10 +58,10 @@ Example below will delete and build the docker image.
 
 Command line Execution
 
-    mvn mmik8:buildImage
-    mvn mmik8:deleteImage
-    mvn mmik8:deploy
-    mvn mmik8:undeploy
+    mvn k8:buildImage
+    mvn k8:deleteImage
+    mvn k8:deploy
+    mvn k8:undeploy
     
     
 ## How to structure you project
@@ -80,7 +82,7 @@ The default directory is `src/main/docker/`, however you can define your own:
     
 The plugin looks for a kubernetes yml files in this structure
 
-    src/main/K8
+    src/main/k8
     
 The files selection at current is supported add follows
 

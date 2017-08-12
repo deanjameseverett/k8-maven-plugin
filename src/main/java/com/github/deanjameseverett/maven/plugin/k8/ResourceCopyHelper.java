@@ -1,4 +1,4 @@
-package com.mmiholdings.k8.plugin;
+package com.github.deanjameseverett.maven.plugin.k8;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -2,8 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mmiholdings.k8.plugin</groupId>
-    <artifactId>mmik8-maven-plugin</artifactId>
+    
+    <groupId>com.github.deanjameseverett</groupId>
+    <artifactId>k8-maven-plugin</artifactId>
     <version>1.0.2-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
@@ -26,7 +27,7 @@
         </developer>
     </developers>
 
-    <name>Kubernetes Maven Plugin</name>
+    <name>Kubernetes</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -69,7 +70,7 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.5</version>
                 <configuration>
-                    <goalPrefix>mmik8</goalPrefix>
+                    <goalPrefix>k8</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
@@ -90,6 +91,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.2</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

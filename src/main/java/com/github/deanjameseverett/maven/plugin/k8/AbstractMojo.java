@@ -1,4 +1,4 @@
-package com.mmiholdings.k8.plugin;
+package com.github.deanjameseverett.maven.plugin.k8;
 
 import org.apache.maven.plugins.annotations.Parameter;
 

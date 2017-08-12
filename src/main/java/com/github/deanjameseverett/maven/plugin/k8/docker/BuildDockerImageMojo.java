@@ -1,4 +1,4 @@
-package com.mmiholdings.k8.plugin.docker;
+package com.github.deanjameseverett.maven.plugin.k8.docker;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;

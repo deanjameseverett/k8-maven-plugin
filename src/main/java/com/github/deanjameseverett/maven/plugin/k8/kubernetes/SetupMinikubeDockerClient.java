@@ -1,6 +1,6 @@
-package com.mmiholdings.k8.plugin.kubernetes;
+package com.github.deanjameseverett.maven.plugin.k8.kubernetes;
 
-import com.mmiholdings.k8.plugin.ProcessBuilderHelper;
+import com.github.deanjameseverett.maven.plugin.k8.ProcessBuilderHelper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
