@@ -22,7 +22,7 @@ public class BuildDockerImageMojo extends AbstractDockerMojo {
                 // Copy the resource to target
                 super.copy();
                 // Execute Docker commands
-                getDockerCommandHelper().build(target, imageName);
+                getDockerCommandHelper().build(target, imageName, imageVersion);
             }
         }  catch (IOException | InterruptedException ex) {
             throw new MojoExecutionException(ex.getMessage(),ex);

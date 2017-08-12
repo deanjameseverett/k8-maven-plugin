@@ -16,8 +16,9 @@ public class DockerCommandHelper {
         this.processBuilderHelper = processBuilderHelper;
     }
     
-    public void build(File baseDir,String imageName) throws InterruptedException, IOException {
-        processBuilderHelper.executeCommand(baseDir, DOCKER,BUILD,MINUS_T,imageName,DOT);
+    public void build(File baseDir,String imageName,String imageVersion) throws InterruptedException, IOException {
+        String fullImageName = getFullyQualifiedImageName(imageName, imageVersion);
+        processBuilderHelper.executeCommand(baseDir, DOCKER,BUILD,MINUS_T,fullImageName,DOT);
     }
     
     public void delete(File baseDir,String imageName,String imageVersion) throws InterruptedException, IOException {
