@@ -79,10 +79,16 @@ The default directory is `src/main/docker/`, however you can define your own:
     </configuration>
 
 ### Kubernetes files
-    
-The plugin looks for a kubernetes yml files in this structure
+
+You can add your Kubernetes files in a directory:
 
     src/main/k8
+
+The default directory is `src/main/k8/`, however you can define your own:
+
+    <configuration>
+        <kubernetesConfDir>myOwn/dir</kubernetesConfDir>
+    </configuration>
     
 The files selection at current is supported add follows
 
@@ -91,7 +97,38 @@ The files selection at current is supported add follows
     deployment,yml
     service.yml
     
+You can also add config map files under a folder `config` in the Kubernetes directory
 
+    src/main/k8/config
     
-    
+## Variables in your configuraion files
 
+All files in the Docker and Kubernetes folders has access to maven variables. 
+Example `src/main/docker/Dockerfile`
+
+    FROM airhacks/wildfly
+    MAINTAINER Phillip Kruger, phillip-kruger.com
+    ENV DEPLOYMENT_DIR ${WILDFLY_HOME}/standalone/deployments/
+    RUN rm ${WILDFLY_HOME}/bin/standalone.conf
+    ADD standalone.conf ${WILDFLY_HOME}/bin/
+    ADD @project.build.finalName@.@project.packaging@ ${DEPLOYMENT_DIR}
+
+@project.build.finalName@ and @project.packaging@ is defined in pom.xml
+
+## Plugin configuration
+
+In most cases you can just use the default values, however if you need to you can set them as plugin configurations:
+
+* target (default to ${project.build.directory})
+* encoding (default to ${project.build.sourceEncoding})
+* artefactName (default to ${project.build.finalName})
+* artefactType (default to ${project.packaging})
+* imageName (default to ${project.artifactId})
+* imageVersion (default to ${project.version})
+* dockerConfDir (default to ${project.basedir}/src/main/docker)
+* dockerFileName (default to Dockerfile)
+* kubernetesConfDir (default to ${project.basedir}/src/main/k8)
+* persistenceFileName (default to persistence.yml)
+* claimFileName (default to claim.yml)
+* deploymentFileName (default to deployment.yml)
+* serviceFileName (default to service.yml)
