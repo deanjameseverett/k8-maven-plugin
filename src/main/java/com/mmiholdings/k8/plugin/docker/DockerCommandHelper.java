@@ -1,7 +1,6 @@
 package com.mmiholdings.k8.plugin.docker;
 
 import com.mmiholdings.k8.plugin.ProcessBuilderHelper;
-import static com.mmiholdings.k8.plugin.docker.AbstractDockerMojo.DOUBLE_DOT;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,4 +35,5 @@ public class DockerCommandHelper {
     private static final String RMI = "rmi";
     private static final String MINUS_T = "-t";
     private static final String MINUS_F = "-f";
+    private static final String DOUBLE_DOT = ":";
 }

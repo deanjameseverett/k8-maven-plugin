@@ -63,10 +63,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         getLog().error(msg,e);
     }
     
-    
-    
-    
     private ResourceCopyHelper getResourceCopyHelper(){
-        return new ResourceCopyHelper(mavenResourcesFiltering, project, session, encoding, target);
+        return new ResourceCopyHelper(mavenResourcesFiltering, project, session, encoding);
     }
 }

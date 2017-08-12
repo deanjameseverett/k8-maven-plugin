@@ -2,7 +2,6 @@ package com.mmiholdings.k8.plugin;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -22,14 +21,12 @@ public class ResourceCopyHelper {
     private final String encoding;
     private final MavenProject project;
     private final MavenSession session;
-    private final File target;
     
-    public ResourceCopyHelper(MavenResourcesFiltering mavenResourcesFiltering,MavenProject project,MavenSession session,String encoding,File target){
+    public ResourceCopyHelper(MavenResourcesFiltering mavenResourcesFiltering,MavenProject project,MavenSession session,String encoding){
         this.mavenResourcesFiltering = mavenResourcesFiltering;
         this.encoding = encoding;
         this.project = project;
         this.session = session;
-        this.target = target;
     }
     
     public void copy(File fromDir,File toDir,List<String> include) throws MojoExecutionException {

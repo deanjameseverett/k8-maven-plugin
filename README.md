@@ -30,19 +30,21 @@ Otherwise it will be pulled from artefactory when you add it to your maven pom.x
 
 ## Usage
 
-For each maven project add the plugin in the 
+For each maven project add the plugin (you might want to do this in a profile)
+Example below will delete and build the docker image.
     
     <build>
         <plugins>
             <plugin>
                 <groupId>com.mmiholdings.k8.plugin</groupId>
                 <artifactId>mmik8-maven-plugin</artifactId>
-                <version>1.0</version>
+                <version>1.0.2-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>mmik8-compile</id>
-                        <phase>compile</phase>
+                        <phase>install</phase>
                         <goals>
+                            <goal>deleteImage</goal>
                             <goal>buildImage</goal>
                         </goals>
                     </execution>
