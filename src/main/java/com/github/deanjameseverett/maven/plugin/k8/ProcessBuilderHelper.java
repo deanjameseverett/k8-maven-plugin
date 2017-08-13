@@ -33,18 +33,18 @@ public class ProcessBuilderHelper {
         return l;
     }
 
-    public void executeCommand(File dockerDirectory, String... command) throws IOException, InterruptedException {
-        executeCommand(dockerDirectory,Arrays.asList(command));
+    public void executeCommand(File directory, String... command) throws IOException, InterruptedException {
+        executeCommand(directory,Arrays.asList(command));
     }
     
-    public void executeCommand(File dockerDirectory, List<String> command) throws IOException, InterruptedException {
-        processs(dockerDirectory, command);
+    public void executeCommand(File directory, List<String> command) throws IOException, InterruptedException {
+        processs(directory, command);
     }
 
-    public boolean contains(File dockerDirectory, String fileName) {
-        if(dockerDirectory.isDirectory()){
-            File[] l = dockerDirectory.listFiles();
-            for (int i = 0; i < dockerDirectory.listFiles().length; i++) {
+    public boolean contains(File directory, String fileName) {
+        if(directory.isDirectory()){
+            File[] l = directory.listFiles();
+            for (int i = 0; i < directory.listFiles().length; i++) {
                 if (l[i].isFile()) {
                     if (l[i].getName().equals(fileName)) {
                         return true;
@@ -55,25 +55,27 @@ public class ProcessBuilderHelper {
         return false;
     }
     
-    private void processs(File dockerDirectory, List<String> command, List<String> results) throws IOException {
+    private void processs(File directory, List<String> command, List<String> results) throws IOException {
         String line;
-        BufferedReader br = execPS(dockerDirectory, command);
+        BufferedReader br = execPS(directory, command);
         while ((line = br.readLine()) != null) {
            results.add(line);
         }
     }
 
-    private void processs(File dockerDirectory, List<String> command) throws IOException {
-        BufferedReader br = execPS(dockerDirectory, command);
+    private void processs(File directory, List<String> command) throws IOException {
+        BufferedReader br = execPS(directory, command);
         String line;
         while ((line = br.readLine()) != null) {
             log.info(line);
         }
     }
 
-    private BufferedReader execPS(File dockerDirectory, List<String> command) throws IOException {
+    private BufferedReader execPS(File directory, List<String> command) throws IOException {
+        
         ProcessBuilder pb = new ProcessBuilder().command(command);
-        if (dockerDirectory != null) pb.directory(dockerDirectory);
+        if (directory == null) directory = getTmp(); 
+        pb.directory(directory);
         pb.redirectErrorStream(true);
         Process process = pb.start();
         InputStream processStdOutput = process.getInputStream();
@@ -81,4 +83,12 @@ public class ProcessBuilderHelper {
         BufferedReader br = new BufferedReader(r);
         return br;
     }
+
+    private File getTmp() {
+        return new File(tmpDir);
+    }
+    
+    private static final String SH = "sh";
+    private final String tmpDir = System.getProperty(TMP_DIR_PROP);
+    private static final String TMP_DIR_PROP = "java.io.tmpdir";
 }

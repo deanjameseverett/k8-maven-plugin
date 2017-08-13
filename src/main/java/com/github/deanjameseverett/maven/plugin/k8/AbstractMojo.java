@@ -59,6 +59,10 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
         getLog().info(msg);
     }
 
+    protected void error(String msg){
+        getLog().error(msg);
+    }
+    
     protected void error(String msg,Throwable e){
         getLog().error(msg,e);
     }

@@ -62,7 +62,8 @@ Command line Execution
     mvn k8:deleteImage
     mvn k8:deploy
     mvn k8:undeploy
-    
+    mvn k8:startMinikube
+    mvn k8:stopMinikube
     
 ## How to structure you project
 

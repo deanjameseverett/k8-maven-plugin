@@ -16,7 +16,6 @@ public class BuildDockerImageMojo extends AbstractDockerMojo {
     @Override
     public void execute() throws MojoExecutionException {
         info("Building Image using Dockerfile in [" + dockerConfDir + "]");
-        
         try {
             if (dockerfileExist()) {
                 // Copy the resource to target

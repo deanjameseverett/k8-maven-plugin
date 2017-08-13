@@ -15,7 +15,6 @@ public class DeleteDockerImageMojo extends AbstractDockerMojo {
     @Override
     public void execute()throws MojoExecutionException {
         info("Deleting docker image [" + imageName +"]");
-        
         try {
             if (dockerfileExist()) {
                 // Copy the resource to target
