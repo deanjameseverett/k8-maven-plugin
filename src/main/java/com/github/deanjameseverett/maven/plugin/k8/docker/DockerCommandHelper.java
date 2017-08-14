@@ -18,7 +18,7 @@ public class DockerCommandHelper {
     
     public void build(File baseDir,String imageName,String imageVersion) throws InterruptedException, IOException {
         String fullImageName = getFullyQualifiedImageName(imageName, imageVersion);
-        processBuilderHelper.executeCommand(baseDir, SH,EVAL,DOCKER,BUILD,MINUS_T,fullImageName,DOT);
+        processBuilderHelper.executeCommand(baseDir,DOCKER,BUILD,MINUS_T,fullImageName,DOT);
     }
     
     public void delete(File baseDir,String imageName,String imageVersion) throws InterruptedException, IOException {
@@ -37,6 +37,4 @@ public class DockerCommandHelper {
     private static final String MINUS_T = "-t";
     private static final String MINUS_F = "-f";
     private static final String DOUBLE_DOT = ":";
-    private static final String SH = "sh";
-    private static final String EVAL = "eval $(minikube docker-env)";
 }
