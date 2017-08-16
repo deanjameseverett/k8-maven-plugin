@@ -4,8 +4,6 @@ import com.github.deanjameseverett.maven.plugin.k8.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 
 
@@ -29,9 +27,6 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     @Parameter( property = "dockerFileName", defaultValue = "Dockerfile", readonly=true, required=false)
     protected String dockerFileName;
     
-    @Parameter
-    private List<String> includeFileTypes;
-    
     protected boolean dockerfileExist(){
         return processBuilderHelper.contains(new File(dockerConfDir), dockerFileName);
     }
@@ -41,27 +36,6 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
     }
     
     protected void copy() throws MojoExecutionException{
-        super.copy(new File(dockerConfDir), getIncludes());
+        super.copy(new File(dockerConfDir));
     }
-    
-    protected List<String> getIncludes(){
-        List<String> includes = new ArrayList<>();
-        // Add (by default) Dockerfile
-        info("... including " + dockerFileName);
-        includes.add(dockerFileName);
-        
-        if(includeFileTypes==null || includeFileTypes.isEmpty()){
-            includes.add(ALL_DOT_ALL);
-        }else{
-            includeFileTypes.forEach((userDefinedFileType) -> {
-                info("... including " + userDefinedFileType);
-                includes.add(ALL_DOT + userDefinedFileType);
-            });
-        }
-        
-        return includes;
-    }
-    
-    private static final String ALL_DOT = "*.";
-    private static final String ALL_DOT_ALL = "*.*";
 }

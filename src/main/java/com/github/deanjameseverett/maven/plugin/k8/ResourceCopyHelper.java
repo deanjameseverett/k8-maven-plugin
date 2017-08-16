@@ -2,6 +2,7 @@ package com.github.deanjameseverett.maven.plugin.k8;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
@@ -29,9 +30,15 @@ public class ResourceCopyHelper {
         this.session = session;
     }
     
-    public void copy(File fromDir,File toDir,List<String> include) throws MojoExecutionException {
+    public void copy(File fromDir,File toDir,List<String> include,List<String> noFilterTypes) throws MojoExecutionException {
+        // Add some default include
+        if(include==null || include.isEmpty())include = DEFAULT_INCLUDES;
+        // Add some defaults that we know about
+        if(noFilterTypes==null || noFilterTypes.isEmpty())noFilterTypes = new ArrayList<>();
+        noFilterTypes.addAll(DEFAULT_NO_FILTER_TYPES);
+        
         try {
-            MavenResourcesExecution mre = new MavenResourcesExecution(toResourceList(fromDir,toDir,include), fromDir, this.project, this.encoding, new ArrayList<>(), new ArrayList<>(), session);
+            MavenResourcesExecution mre = new MavenResourcesExecution(toResourceList(fromDir,toDir,include), fromDir, this.project, this.encoding, new ArrayList<>(),noFilterTypes, session);
             mavenResourcesFiltering.filterResources(mre);
         } catch (MavenFilteringException ex) {
             throw new MojoExecutionException(ex.getMessage(),ex);
@@ -54,4 +61,7 @@ public class ResourceCopyHelper {
         resource.setFiltering(true);
         return resource;
     }
+
+    private static final List<String> DEFAULT_NO_FILTER_TYPES = Arrays.asList(new String[]{"deb","rpm","tar","gz","tar.gz","zip","war","ear","jar","rar"}); 
+    private static final List<String> DEFAULT_INCLUDES = Arrays.asList(new String[]{"*","*.*","**/*","**/*.*"}); 
 }

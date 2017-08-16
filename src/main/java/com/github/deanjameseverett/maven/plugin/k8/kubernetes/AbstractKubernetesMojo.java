@@ -2,8 +2,6 @@ package com.github.deanjameseverett.maven.plugin.k8.kubernetes;
 
 import com.github.deanjameseverett.maven.plugin.k8.AbstractMojo;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -36,27 +34,6 @@ public abstract class AbstractKubernetesMojo extends AbstractMojo {
     }
     
     protected void copy() throws MojoExecutionException{
-        super.copy(new File(kubernetesConfDir), getIncludes());
-    }
-    
-    protected List<String> getIncludes(){
-        List<String> includes = new ArrayList<>();
-        // Add (by default) persistence.yml
-        info("... including " + persistenceFileName);
-        includes.add(persistenceFileName);
-        // Add (by default) claim.yml
-        info("... including " + claimFileName);
-        includes.add(claimFileName);
-        // Add (by default) deployment.yml
-        info("... including " + deploymentFileName);
-        includes.add(deploymentFileName);
-        // Add (by default) service.yml
-        info("... including " + serviceFileName);
-        includes.add(serviceFileName);
-        // Add (by default) all files in /config
-        info("... including config/**.*");
-        includes.add("config/*.*");
-        
-        return includes;
+        super.copy(new File(kubernetesConfDir));
     }
 }
