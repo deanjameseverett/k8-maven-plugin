@@ -55,7 +55,6 @@ Example below will delete and build the docker image. And then redeploy to kuber
         </plugins>
     </build>
 
-
 Command line Execution
 
     mvn k8:buildImage
@@ -133,3 +132,24 @@ In most cases you can just use the default values, however if you need to you ca
 * claimFileName (default to claim.yml)
 * deploymentFileName (default to deployment.yml)
 * serviceFileName (default to service.yml)
+
+You can also explicitly define the files that should be included:
+(The default is all files in the folder)
+
+    <configuration>
+        <includeFiles>
+            <param>standalone.conf</param>
+            <param>somefile.txt</param>
+        </includeFiles>
+    </configuration>
+
+You can also add to the existing do not filter list (file type that we do not do pom variable replacement, usually non text based files)
+(The current default is deb, rpm, tar, gz, tar.gz, zip, war, ear, jar, rar)
+
+    <configuration>
+        <noFilterTypes>
+            <param>conf</param>
+            <param>doc</param>
+        </noFilterTypes>
+    </configuration>
+
