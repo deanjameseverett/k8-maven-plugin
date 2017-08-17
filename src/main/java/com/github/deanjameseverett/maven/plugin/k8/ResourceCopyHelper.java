@@ -3,7 +3,10 @@ package com.github.deanjameseverett.maven.plugin.k8;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Resource;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -31,6 +34,9 @@ public class ResourceCopyHelper {
     }
     
     public void copy(File fromDir,File toDir,List<String> include,List<String> noFilterTypes) throws MojoExecutionException {
+        // Get the current file rights
+        Map<String, FileRights> fileRights = getFileRights(fromDir);
+        
         // Add some default include
         if(include==null || include.isEmpty())include = DEFAULT_INCLUDES;
         // Add some defaults that we know about
@@ -40,6 +46,10 @@ public class ResourceCopyHelper {
         try {
             MavenResourcesExecution mre = new MavenResourcesExecution(toResourceList(fromDir,toDir,include), fromDir, this.project, this.encoding, new ArrayList<>(),noFilterTypes, session);
             mavenResourcesFiltering.filterResources(mre);
+            
+            // Restore the file rights 
+            restoreFileRights(fileRights,toDir);
+            
         } catch (MavenFilteringException ex) {
             throw new MojoExecutionException(ex.getMessage(),ex);
         }
@@ -62,6 +72,70 @@ public class ResourceCopyHelper {
         return resource;
     }
 
-    private static final List<String> DEFAULT_NO_FILTER_TYPES = Arrays.asList(new String[]{"deb","rpm","tar","gz","tar.gz","zip","war","ear","jar","rar"}); 
+    private void restoreFileRights(Map<String,FileRights> fileRights, File path ) {
+
+        Set<Map.Entry<String, FileRights>> entrySet = fileRights.entrySet();
+
+        for(Map.Entry<String, FileRights> e:entrySet){
+            File f = new File(path,e.getKey());
+            FileRights fr = e.getValue();
+            f.setReadable(fr.isRead());
+            f.setWritable(fr.isWrite());
+            f.setExecutable(fr.isExecute());
+        }
+        
+    }
+    
+    private Map<String,FileRights> getFileRights(File filePath){
+        Map<String,FileRights> m = new HashMap<>();
+        String root = filePath.getAbsolutePath();
+        getFileRights(m, filePath, root);
+        return m;
+    }
+    
+    private void getFileRights(Map<String,FileRights> m, File path ,String root) {
+        
+        File[] list = path.listFiles();
+
+        if (list == null) return;
+
+        for ( File f : list ) {
+            if ( f.isDirectory() ) {
+                getFileRights(m, f ,root);
+            }else {
+                
+                String fullPath = f.getAbsolutePath();
+                String name = fullPath.substring(root.length());
+                m.put(name, new FileRights(f.canRead(), f.canWrite(), f.canExecute()));
+            }
+        }
+    }
+    
+    class FileRights {
+        boolean read;
+        boolean write;
+        boolean execute;
+
+        public FileRights(boolean read, boolean write, boolean execute) {
+            this.read = read;
+            this.write = write;
+            this.execute = execute;
+        }
+
+        public boolean isRead() {
+            return read;
+        }
+
+        public boolean isWrite() {
+            return write;
+        }
+
+        public boolean isExecute() {
+            return execute;
+        }
+        
+    }        
+            
+    private static final List<String> DEFAULT_NO_FILTER_TYPES = Arrays.asList(new String[]{"deb","rpm","tar","gz","tar.gz","zip","war","ear","jar","rar", "jpg", "jpeg", "gif", "bmp","png","pdf"});
     private static final List<String> DEFAULT_INCLUDES = Arrays.asList(new String[]{"*","*.*","**/*","**/*.*"}); 
 }
