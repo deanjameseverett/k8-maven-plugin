@@ -143,6 +143,8 @@ You can also explicitly define the files that should be included:
         </includeFiles>
     </configuration>
 
+(above will only copy the specified files,standalone.conf and somefile.txt)
+
 You can also add to the existing do not filter list (file type that we do not do pom variable replacement, usually non text based files)
 (The current default is deb, rpm, tar, gz, tar.gz, zip, war, ear, jar, rar)
 
@@ -153,3 +155,4 @@ You can also add to the existing do not filter list (file type that we do not do
         </noFilterTypes>
     </configuration>
 
+(above will add all doc and conf files to the ignore list, so no filter on those)
