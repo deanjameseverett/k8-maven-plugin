@@ -76,13 +76,13 @@ public class ResourceCopyHelper {
 
         Set<Map.Entry<String, FileRights>> entrySet = fileRights.entrySet();
 
-        for(Map.Entry<String, FileRights> e:entrySet){
+        entrySet.forEach((e) -> {
             File f = new File(path,e.getKey());
             FileRights fr = e.getValue();
             f.setReadable(fr.isRead());
             f.setWritable(fr.isWrite());
             f.setExecutable(fr.isExecute());
-        }
+        });
         
     }
     
