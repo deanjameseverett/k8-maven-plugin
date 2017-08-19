@@ -16,6 +16,12 @@
             <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
         </license>
     </licenses>
+    
+    <scm>
+        <connection>scm:git:git://github.com/deanjameseverett/k8-maven-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:deanjameseverett/k8-maven-plugin.git</developerConnection>
+        <url>https://github.com/deanjameseverett/k8-maven-plugin</url>
+    </scm>
 
     <developers>
         <developer>
