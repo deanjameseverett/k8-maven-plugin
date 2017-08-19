@@ -4,7 +4,7 @@
     
     <groupId>com.github.deanjameseverett</groupId>
     <artifactId>k8-maven-plugin</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>maven-plugin</packaging>
 
     <name>Kubernetes-Plugin</name>
