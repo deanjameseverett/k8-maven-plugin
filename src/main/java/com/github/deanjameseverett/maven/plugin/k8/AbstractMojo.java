@@ -13,7 +13,7 @@ import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 
 /**
  * Abstract class for our own mojos. Define some shared parameters
- * @see https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
+ * https://maven.apache.org/guides/plugin/guide-java-plugin-development.html
  */
 public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo {
     
