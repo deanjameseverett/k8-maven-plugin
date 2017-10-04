@@ -17,6 +17,9 @@ public abstract class AbstractDockerMojo extends AbstractMojo {
 
     @Parameter( property = "imageVersion", defaultValue = "${project.version}", readonly=true, required=false)
     protected String imageVersion;
+    
+    @Parameter( property = "dockerRegistry", defaultValue = "${project.properties.dockerRegistry}", readonly=true, required=false)
+    protected String dockerRegistry;
 
     @Parameter( property = "dockerConfDir", defaultValue = "${project.basedir}/src/main/docker", readonly=true, required=false)
     protected String dockerConfDir;

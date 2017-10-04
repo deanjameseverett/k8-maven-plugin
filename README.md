@@ -1,6 +1,6 @@
 # Kubernetes Maven Plugin
 
-**Version 1.0.3**
+**Version 1.0.4**
 
 This is a maven plugin that can be installed locally and 
 on the central artifactory repo.
@@ -14,6 +14,7 @@ to build and deploy docker images to kubernetes
 
 * [Dean James-Everett](https://github.com/deanjameseverett)
 * [Phillip Kruger](https://github.com/phillip-kruger)
+* [Grant Edwards](grant@symcoiq.com)
 
 ## Pre-Requirements
 
@@ -38,7 +39,7 @@ Example below will delete and build the docker image. And then redeploy to kuber
             <plugin>
                 <groupId>com.github.deanjameseverett</groupId>
                 <artifactId>k8-maven-plugin</artifactId>
-                <version>1.0.3</version>
+                <version>1.0.4</version>
                 <executions>
                     <execution>
                         <id>container</id>
