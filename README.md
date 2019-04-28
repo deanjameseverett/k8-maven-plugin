@@ -1,6 +1,6 @@
 # Kubernetes Maven Plugin
 
-**Version 1.0.4**
+**Version 1.0.5**
 
 This is a maven plugin that can be installed locally and 
 on the central artifactory repo.
