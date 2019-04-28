@@ -15,10 +15,11 @@ to build and deploy docker images to kubernetes
 * [Dean James-Everett](https://github.com/deanjameseverett)
 * [Phillip Kruger](https://github.com/phillip-kruger)
 * [Grant Edwards](grant@symcoiq.com)
+* [Michal Hubert Siemaszko](https://ideas.into.software/)
 
 ## Pre-Requirements
 
-Make sure minikube is running and you have exported the minikube environment
+If not using 'startMinikube' goal directly, make sure minikube is running and you have exported the minikube environment
 
 	minikube start	
 	eval $(minikube docker-env)
@@ -62,6 +63,7 @@ Command line Execution
     mvn k8:deleteImage
     mvn k8:deploy
     mvn k8:undeploy
+    mvn k8:apply
     mvn k8:startMinikube
     mvn k8:stopMinikube
     
@@ -91,7 +93,16 @@ The default directory is `src/main/k8/`, however you can define your own:
         <kubernetesConfDir>myOwn/dir</kubernetesConfDir>
     </configuration>
     
-The files selection at current is supported add follows
+You can specify any Kubernetes descriptor when using 'apply' goal:
+
+	<configuration>
+		<includeFiles>
+			<param>infra-messagebroker-statefulset.yaml</param>
+			<param>infra-database-statefulset.yaml</param>
+		</includeFiles>
+	</configuration>									
+    
+Alternatively, you can specify any of the supported types of Kubernetes descriptors when using 'deploy' and 'undeploy' goals. The specific types which are currently supported are:
 
     persistence.yml
     claim.yml
@@ -133,6 +144,10 @@ In most cases you can just use the default values, however if you need to you ca
 * claimFileName (default to claim.yml)
 * deploymentFileName (default to deployment.yml)
 * serviceFileName (default to service.yml)
+* dockerRegistry (default to ${project.properties.dockerRegistry})
+* insecureRegistry (used with 'startMinikube' goal, ignored if not specified)
+* memory (used with 'startMinikube' goal, ignored if not specified)
+* cpus (used with 'startMinikube' goal, ignored if not specified)
 
 You can also explicitly define the files that should be included:
 (The default is all files in the folder)

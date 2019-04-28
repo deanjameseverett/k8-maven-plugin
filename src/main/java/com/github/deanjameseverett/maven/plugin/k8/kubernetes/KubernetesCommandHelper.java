@@ -55,6 +55,14 @@ public class KubernetesCommandHelper {
         
     }
     
+    public void apply(File kubernetesConfDir, String... yamlFiles) throws IOException, InterruptedException{
+        for(String yamlFile:yamlFiles){
+            if(kubernetesfileExist(kubernetesConfDir, yamlFile)){
+                processBuilderHelper.executeCommand(kubernetesConfDir, KUBE_CONTROL, APPLY, MINUS_F, yamlFile);
+            }
+        }
+    }    
+    
     private boolean kubernetesfileExist(File kubernetesConfDir,String filename){
         return processBuilderHelper.contains(kubernetesConfDir, filename);
     }
@@ -88,6 +96,7 @@ public class KubernetesCommandHelper {
     private static final String CONFIG = "config";
     private static final String CREATE = "create";
     private static final String EDIT = "edit";
+    private static final String APPLY = "apply";
     private static final String CONFIG_MAP = "configmap";
     private static final String MINUS_MINUS_FROM_FILE = "--from-file=";
     private static final String DELETE = "delete";

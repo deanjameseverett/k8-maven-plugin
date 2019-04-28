@@ -60,10 +60,24 @@ public class DockerCommandHelper {
          
     }
     
+    @Deprecated
     public void delete(File baseDir,String imageName,String imageVersion) throws InterruptedException, IOException {
         String fullImageName = getFullyQualifiedImageName(imageName, imageVersion);
         processBuilderHelper.executeCommand(baseDir, DOCKER,RMI,MINUS_F,fullImageName);
     }
+    
+    public void delete(File baseDir,String imageName,String imageVersion, String dockerRegistry) throws InterruptedException, IOException {
+    	
+    	String fullImageName = null;
+    	
+    	if(dockerRegistry != null && !dockerRegistry.isEmpty()) { 
+    		fullImageName = getFullyQualifiedImageName(imageName, imageVersion, dockerRegistry);
+    	} else {
+    		fullImageName = getFullyQualifiedImageName(imageName, imageVersion);
+    	}    	
+    	
+        processBuilderHelper.executeCommand(baseDir, DOCKER,RMI,MINUS_F,fullImageName);
+    }    
     
     private String getFullyQualifiedImageName(String imageName,String imageVersion){
         return imageName + DOUBLE_DOT + imageVersion;
