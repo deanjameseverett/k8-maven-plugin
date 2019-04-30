@@ -3,6 +3,7 @@ package com.github.deanjameseverett.maven.plugin.k8;
 import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -36,7 +37,7 @@ public abstract class AbstractMojo extends org.apache.maven.plugin.AbstractMojo 
     private List<String> noFilterTypes;
     
     @Parameter
-    private List<String> includeFiles;
+    protected List<String> includeFiles;
     
     @Component( role=MavenResourcesFiltering.class, hint="default")
     protected MavenResourcesFiltering mavenResourcesFiltering;

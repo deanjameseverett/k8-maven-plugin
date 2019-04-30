@@ -20,7 +20,7 @@ public class DeleteDockerImageMojo extends AbstractDockerMojo {
                 // Copy the resource to target
                 super.copy();
                 // Execute Docker commands
-                getDockerCommandHelper().delete(target, imageName, imageVersion);
+                getDockerCommandHelper().delete(target, imageName, imageVersion, dockerRegistry);
             }
         }  catch (IOException | InterruptedException e) {
             // We do not fail... Just print in log

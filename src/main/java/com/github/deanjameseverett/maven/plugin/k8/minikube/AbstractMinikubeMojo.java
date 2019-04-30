@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 
 /**
  * Abstract class for minikube mojos. 
@@ -13,6 +15,15 @@ public abstract class AbstractMinikubeMojo extends AbstractMojo {
     protected static final String MINIKUBE = "minikube";
     protected static final String OK = " [OK]";
     protected static final String FAIL = " [NOT OK]";
+    
+    @Parameter(property = "insecureRegistry", readonly=true, required=false)
+    protected String insecureRegistry;
+    
+    @Parameter(property = "memory", readonly=true, required=false)
+    protected Integer memory; 
+    
+    @Parameter(property = "cpus", readonly=true, required=false)
+    protected Integer cpus;
     
     protected boolean isRunning(){
         String[] cmd = { MINIKUBE, STATUS };
